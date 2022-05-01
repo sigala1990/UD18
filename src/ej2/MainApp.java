@@ -6,22 +6,23 @@ public class MainApp {
 
 	public static void main(String[] args) {
 		
-		// instanciamos la clase que contiene el método de conexión a BD y los métodos CRUD
-		ConnectionDB miConexion = new ConnectionDB();
-
-		// invocamos el método que crea la base de datos
-		miConexion.crearDatabase("ud18_ej2");
+		// invocamos el método que establece la conexión
+		ConnectionDB.crearConexion();
 		
+		// invocamos el método que crea la base de datos
+		ConnectionDB.crearDatabase("ud18_ej2");
+		
+	
 		// invocamos el método que crea la tabla "departamentos"
-		miConexion.crearTabla
+		ConnectionDB.crearTabla
 			("ud18_ej2", 
 				"CREATE TABLE departamentos "
 				+ " (codigo INT PRIMARY KEY,"
 				+ " nombre VARCHAR(100),"
 				+ " presupuesto INT)");
-		
+	
 		// invocamos el método que crea la tabla "empleados"
-		miConexion.crearTabla
+	    ConnectionDB.crearTabla
 			("ud18_ej2", 
 				"CREATE TABLE empleados "
 				+ " (DNI VARCHAR(8) PRIMARY KEY,"
@@ -32,7 +33,7 @@ public class MainApp {
 				+ " ON DELETE CASCADE ON UPDATE CASCADE)");
 
 		// invocamos el método que inserta los registros a "departamentos"
-		miConexion.insertarRegistros
+	    ConnectionDB.executarConsultas
 			("ud18_ej2", 
 				"INSERT INTO departamentos VALUES "
 				+ " (1, 'RRHH', 10000),"
@@ -42,7 +43,7 @@ public class MainApp {
 				+ " (5, 'Compras', 15000)");
 		
 		// invocamos el método que inserta los registros a "empleados"
-		miConexion.insertarRegistros
+	    ConnectionDB.executarConsultas
 			("ud18_ej2", 
 				"INSERT INTO empleados VALUES "
 				+ " ('A1234567', 'Veronika', 'Polonchak', 1),"
@@ -52,29 +53,30 @@ public class MainApp {
 				+ " ('E1234567', 'Octavio', 'Bernal', 5)");
 		
 		// invocamos el método que actualiza los registros en "departamentos"
-		miConexion.actualizarRegistros
+	    ConnectionDB.executarConsultas
 			("ud18_ej2",
 				"UPDATE departamentos SET nombre = 'Contabilidad y finanzas' WHERE codigo = 3");
 		
 		// invocamos el método que actualiza los registros en "empleados"
-		miConexion.actualizarRegistros
+	    ConnectionDB.executarConsultas
 			("ud18_ej2",
 				"UPDATE empleados SET nombre = 'Verónica' WHERE DNI = 'A1234567'");
 	
 		// invocamos el método que obtiene los registros de "departamentos"
-		Departamentos departamentos = new Departamentos();
-		departamentos.obtenerRegistros("ud18_ej2", "SELECT * FROM departamentos");
+		Departamentos.obtenerRegistros("ud18_ej2", "SELECT * FROM departamentos");
 		
 		// invocamos el método que obtiene los registros de "empleados"
-		Empleados empleados = new Empleados();
-		empleados.obtenerRegistros("ud18_ej2", "SELECT * FROM empleados");
+		Empleados.obtenerRegistros("ud18_ej2", "SELECT * FROM empleados");
 		
 		// invocamos el método que elimina los registros de "empleados"
-		miConexion.eliminarRegistros("ud18_ej2", "DELETE FROM empleados");
+		ConnectionDB.executarConsultas("ud18_ej2", "DELETE FROM empleados");
 		
 		// invocamos el método que elimina los registros de "departamentos"
-		miConexion.eliminarRegistros("ud18_ej2", "DELETE FROM departamentos");
+		ConnectionDB.executarConsultas("ud18_ej2", "DELETE FROM departamentos");
 
+		// invocamos el método que cierra la conexión
+		ConnectionDB.cerrarConexion();
+		
 	}
 
 }
